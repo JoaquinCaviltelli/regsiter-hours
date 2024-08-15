@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
 const GoalForm = ({ onSave, currentGoal }) => {
-  const [goal, setGoal] = useState(currentGoal || 0);
+  const [hours, setHours] = useState(currentGoal);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(goal);
+    onSave(Number(hours));
   };
 
   return (
@@ -13,13 +13,12 @@ const GoalForm = ({ onSave, currentGoal }) => {
       <label>
         Meta de Horas:
         <input
-          type="text"
-          value={goal}
-          onChange={(e) => setGoal(Number(e.target.value))}
+          type="number"
+          value={hours}
+          onChange={(e) => setHours(e.target.value)}
           className="ml-2 border rounded p-1"
-          step=".01"
-          autoFocus
           min="0"
+          autoFocus
         />
       </label>
       <button type="submit" className="ml-2 bg-blue-500 text-white p-2 rounded">

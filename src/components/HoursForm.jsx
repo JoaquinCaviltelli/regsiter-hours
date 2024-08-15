@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 
 const HoursForm = ({ onSave, currentHours }) => {
-  const [hours, setHours] = useState(currentHours || 0);
+  // Convertir las horas actuales (decimal) al formato de tiempo HH:MM
+  const hours = Math.floor(currentHours);
+  const minutes = Math.round((currentHours - hours) * 60);
+  const initialTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+  const [time, setTime] = useState(initialTime);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(hours);
+
+    // Convertir el tiempo (HH:MM) a horas decimales
+    const [hours, minutes] = time.split(":").map(Number);
+    const totalHours = hours + minutes / 60;
+
+    onSave(totalHours);
   };
 
   return (
@@ -13,12 +23,11 @@ const HoursForm = ({ onSave, currentHours }) => {
       <label>
         Horas:
         <input
-          type="text"
-          value={hours}
-          onChange={(e) => setHours(Number(e.target.value))}
+          type="time"
+          value={time}
+          onChange={(e) => setTime(e.target.value)}
           className="ml-2 border rounded p-1"
-          min="0"
-          step=".01"
+          step="300" // Incremento de 5 minutos
           autoFocus
         />
       </label>

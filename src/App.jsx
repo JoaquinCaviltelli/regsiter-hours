@@ -33,7 +33,7 @@ const App = () => {
   }, [goalHours]);
 
   const handleAddHours = (hours) => {
-    setTotalHours(totalHours + hours);
+    setTotalHours(Number(totalHours) + hours);
     setIsHoursModalOpen(false);
   };
 
