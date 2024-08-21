@@ -1,44 +1,38 @@
-import React, { useEffect, useRef } from 'react';
+import { useState } from 'react';
 
-const Modal = ({ isOpen, onClose, children }) => {
-  const modalRef = useRef(null);
+const Modal = ({ type, activity, onClose, onSubmit }) => {
+  const [hours, setHours] = useState(activity ? activity.hours : '');
+  const [date, setDate] = useState(activity ? activity.date : '');
 
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      window.addEventListener('keydown', handleKeyDown);
-    }
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isOpen, onClose]);
-
-  const handleOverlayClick = (event) => {
-    if (modalRef.current && !modalRef.current.contains(event.target)) {
-      onClose();
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit({ ...activity, hours, date });
+    onClose();
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-      onClick={handleOverlayClick}
-    >
-      <div
-        ref={modalRef}
-        className="bg-white p-6 rounded-lg shadow-lg relative"
-        onClick={(e) => e.stopPropagation()} // Evitar el cierre al hacer clic dentro del modal
-      >
-        {children}
-        
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+      <div className="bg-white p-4 rounded">
+        <h2 className="text-lg font-bold">{type === 'edit' ? 'Edit Activity' : 'Add Activity'}</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="number"
+            placeholder="Hours"
+            value={hours}
+            onChange={(e) => setHours(e.target.value)}
+            className="border p-2 mb-2"
+            required
+          />
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="border p-2 mb-2"
+            required
+          />
+          <button type="submit" className="bg-blue-500 text-white p-2 mr-2">Save</button>
+          <button type="button" onClick={onClose} className="bg-gray-500 text-white p-2">Cancel</button>
+        </form>
       </div>
     </div>
   );

@@ -1,29 +1,23 @@
-import React, { useState } from "react";
+import { useState } from 'react';
 
-const GoalForm = ({ onSave, currentGoal }) => {
-  const [hours, setHours] = useState(currentGoal);
+const GoalForm = ({ goal, onSubmit }) => {
+  const [newGoal, setNewGoal] = useState(goal);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(Number(hours));
+    onSubmit(newGoal);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>
-        Meta de Horas:
-        <input
-          type="number"
-          value={hours}
-          onChange={(e) => setHours(e.target.value)}
-          className="ml-2 border rounded p-1"
-          min="0"
-          autoFocus
-        />
-      </label>
-      <button type="submit" className="ml-2 bg-blue-500 text-white p-2 rounded">
-        Guardar
-      </button>
+      <input
+        type="number"
+        value={newGoal}
+        onChange={(e) => setNewGoal(e.target.value)}
+        className="border p-2"
+        required
+      />
+      <button type="submit" className="bg-blue-500 text-white p-2 ml-2">Save</button>
     </form>
   );
 };
