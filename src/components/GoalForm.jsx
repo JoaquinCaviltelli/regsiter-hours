@@ -13,8 +13,7 @@ const GoalForm = ({ onSave, currentGoal }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(goal);
->>>>>>> parent of e6b08b2 (n)
+    onSave(Number(hours));
   };
 
   return (
